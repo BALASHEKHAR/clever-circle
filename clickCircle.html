@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+		<style>
+			body {
+				background-color: yellow;
+			}
+			.start-place{
+				background-color: yellow;
+				display: flex;
+				flex-direction: column;
+				text-align: center;
+				align-items: center;
+				position: relative;
+				justify-content: center; height: 100vh;margin: 0px;
+			}.end-place
+			{
+
+
+				background-color: yellow;
+				display: none;
+				height: 100vh;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+				flex-direction: column;
+				
+			}
+		</style>
+	<title>Click Circle</title>
+</head>
+<body>
+
+
+	<div class="start-place jumbotron text-center">
+
+		<h1 style="color: #0000ff">welcome to my second game.</h1>
+		<br><br>
+		<h3>click the circles with in one second</h3>
+		<p><u>click 15 circles continuosuly to win the game.</u></p>
+		<p class="highscore">wider the screen harder the game &#129409; .</p><br>
+		<button class="btn btn-primary letsplay">Lets Play</button>
+		<br>
+		<h2>click to play game</h2>
+	</div>
+
+
+	<div class="end-place winner loser text-center">
+			<button class="btn btn-danger retry">retry</button>
+			<h2 class="showtime">it tooks 1.616 seconds to click.</h2>
+			<h2>sorry....</h2>
+			<h2><span style="color: red;text-decoration: underline;">you lost!</span> 😥 the game.</h2>
+			<h2>your score is 9</h1>
+	</div>
+	
+	</body>
+	<script>
+		let btnn=document.querySelector('.letsplay');
+		let score=0;
+		let stared=0;
+		let maxscore=30;
+		let st,et,r;
+		let rr=localStorage.getItem('score');
+			document.querySelector('.highscore').
+			innerHTML=`wider the screen harder the game &#129409;  <br>
+			and your high score is <strong> ${rr} </strong>`;
+		//btnn.addEventListener('click',startGame);
+			let mybody=document.querySelector('body');
+			mybody.addEventListener('click',checkClickedPlace);
+			
+	/*	function startGame() {
+			document.querySelector('.start-place').
+			style.display="none";
+			score=0;
+			//createCircle();
+			
+			let mybody=document.querySelector('body');
+			mybody.addEventListener('click',checkClickedPlace);
+			
+
+		}*/
+		function checkClickedPlace(e)
+		{
+			
+			if(e.target.classList.contains('letsplay'))
+			{
+				document.querySelector('.start-place').style.display='none';
+			let rand=Math.floor((Math.random() * 2000) + 500);
+setTimeout(function() {
+	createCircle();
+}, rand);
+
+			}
+			else if(e.target.classList.contains('circle')){
+			
+				e.target.remove();
+				et=(new Date()).getTime();
+				r=(et-st);
+				if(r>1000)
+				{
+					stopGame(e);
+
+				}
+				else 
+				{
+					score+=1;
+
+				if(score>=maxscore)
+				{
+					stopGame(e);
+					score=0;
+				}
+				else {
+					
+	//document.querySelector('.start-place').style.display='none';
+	let respon=document.querySelector('.end-place');
+	respon.style.display='block';
+	respon.style.padding='20px';
+	//respon.boxSizing='border-box';
+	
+	
+
+				
+	
+				respon.innerHTML=`<h3  style="margin: 0px;padding: 0px;" class="showtime">it tooks ${r/1000} seconds to click.<br>
+				your score is ${score} ,
+				high score is  ${rr}</h3>
+				`;
+				
+let rand=Math.floor((Math.random() * 2000) + 500);
+setTimeout(function() {
+	createCircle();
+}, rand);
+			
+					
+				}
+				}
+				
+			}
+			else if(e.target.classList.contains('retry'))
+			{
+				/*console.log("e.target");
+				stopGame(e);
+				score=0;*/
+				/*document.querySelector('.start-place').style.display='flex';
+				document.querySelector('.end-place').style.display='none';*/
+				score=0;
+				r=0;
+
+				document.querySelector('.end-place').style.display='none';
+			let rand=Math.floor((Math.random() * 2000) + 500);
+setTimeout(function() {
+	createCircle();
+}, rand);
+			}
+			//else console.log('now');
+			
+
+		}
+		/*function announceWinner(){
+			document.querySelector('.jumbotron').
+			style.display="none";
+			document.querySelector('.winner').
+			style.display="block";
+			
+		}*/
+		function stopGame(e)
+		{
+			//winner
+			if(score>=maxscore)
+			{
+				if(localStorage.getItem('score')===null)
+				{
+					localStorage.setItem('score',score);
+
+				}
+				else 
+				{
+					let yy=localStorage.getItem('score');
+					if(score>yy)
+						localStorage.setItem('score',score);
+
+				}
+				
+				e.target.remove();
+				document.querySelector('.end-place').innerHTML=
+				`<button class="btn btn-primary retry">Play Again</button>
+			<h2 class="showtime">Hurray u won the game man.</h2>
+			<h2>Lucky guy.....</h2>
+			<h2><span class="text-primary" style="text-decoration: underline;">you won!</span> the game.</h2>
+			`;
+			document.querySelector('.winner').
+			style.display="flex";
+				document.querySelector('.start-place').
+			style.display="none";
+			
+			
+//console.log(e.target.parentElement);
+			}
+			//lossetr
+			else if(e.target.classList.contains('circle'))
+			{
+
+if(localStorage.getItem('score')===null)
+				{
+					localStorage.setItem('score',score);
+
+				}
+				else 
+				{
+					let yy=localStorage.getItem('score');
+					if(score>yy)
+						localStorage.setItem('score',score);
+
+				}
+
+				e.target.remove();
+				document.querySelector('.start-place').style.display='none';
+				let conatiner=document.querySelector('.end-place');
+				console.log(conatiner);
+				conatiner.innerHTML=`
+				<button class="btn btn-danger retry">retry</button>
+			<h2 class="showtime">it tooks ${r/1000} seconds to click.</h2>
+			<h2>sorry....</h2>
+			<h2><span style="color: red;text-decoration: underline;">you lost!</span> 😥 the game.</h2>
+			<h2>your score is ${score}</h1>`;
+				document.querySelector('.end-place').style.display='flex';
+
+
+
+
+/*<button class="btn btn-danger retry">retry</button>
+			<h2 class="showtime">it tooks 1.616 seconds to click.</h2>
+			<h2>sorry....</h2>
+			<h2><span style="color: red;text-decoration: underline;">you lost!</span> 😥 the game.</h2>
+			<h2>your score is 9</h1>*/
+			
+			}
+			else 
+			{//console.log("lll");
+				//console.log(e.target.children.length);
+			if(e.target.children.length!=0)
+			{
+				
+				e.target.children[2].remove();
+				e.target.children[0].style.display='flex';
+			}	
+			}
+			
+		}
+		function createCircle()
+		{
+			let maxheight=window.innerHeight-100;
+			let maxwidth=window.innerWidth-100;
+
+			let x=Math.floor((Math.random() * maxwidth) + 1);
+			let y=Math.floor((Math.random() * maxheight) + 1);
+
+			let a=Math.floor((Math.random() * 255) + 0);
+			let b=Math.floor((Math.random() * 255) + 0);
+			let c=Math.floor((Math.random() * 255) + 0);
+
+			let circle=document.createElement('div');
+			circle.className='circle';
+			circle.style.borderRadius='50%';
+			circle.style.position='absolute';
+			circle.style.top=y+'px';
+			circle.style.left=x+'px';
+			circle.style.background='rgb(' + a + ',' + b + ',' + c + ')';
+			circle.style.width='100px';
+			circle.style.height='100px';
+			document.querySelector('body').appendChild(circle);
+			st=(new Date()).getTime();
+			//console.log(st);
+		}
+	</script>
+
+</html>
